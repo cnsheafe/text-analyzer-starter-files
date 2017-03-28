@@ -6,41 +6,42 @@ function HandleSubmit() {
     var report = makeReport(textInput);
     var children = $('.hidden').find('dd');
     children.eq(0).text(report.wordCt);
-    children.eq(1).text(report.unqCt);
-    children.eq(2).text(report.avg);
+    children.eq(1).text(report.unqCt());
+    children.eq(2).text(report.wordAvg());
     $('.hidden').removeClass('hidden');
   });
 }
-
+/*Example of closure:
+tkText can still be accessed even after makeReport is finished*/
 function makeReport(text) {
+
+  tkText = text.split(/\W+/);
+  if (tkText[tkText.length-1] === ''){
+    tkText.pop();
+  }
+
   var report = {
-    get tokens(){
-      var tmp = text.split(/\W+/);
-      if (tmp[-1] === undefined){
-        tmp.pop();
-      }
-      return tmp;
-    } ,
-    get wordCt() {
-      return this.tokens.length;
-    },
-    get unqCt() {
+    wordCt: tkText.length,
+
+    unqCt: function() {
       var unqCt = 0;
       for (var i=0; i < this.wordCt; i++) {
-        if(this.tokens.lastIndexOf(this.tokens[i]) === this.tokens.indexOf(this.tokens[i])) {
+        if(tkText.lastIndexOf(tkText[i]) === tkText.indexOf(tkText[i])) {
           unqCt++;
         }
       }
       return unqCt;
     },
-    get avg() {
+
+    wordAvg: function() {
       var sum = 0;
       for (var  i = 0; i < this.wordCt; i++) {
-        sum += this.tokens[i].length;
+        sum += tkText[i].length;
       }
       return sum/this.wordCt;
     }
   };
+
   return report;
 }
 
