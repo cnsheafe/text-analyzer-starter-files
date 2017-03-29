@@ -1,13 +1,13 @@
 /*jshint esversion: 6*/
-function HandleSubmit() {
-  $('form').on('submit', function(ev) {
-    ev.preventDefault();
+function handleSubmit() {
+  $('form').on('submit', function(event) {
+    event.preventDefault();
     $('dl').addClass('hidden');
     const textInput = $(this).serializeArray()[0].value;
     const report = makeReport(textInput);
     const children = $('.hidden').find('dd');
-    children.eq(0).text(report.wordCt);
-    children.eq(1).text(report.unqCt);
+    children.eq(0).text(report.wordCount);
+    children.eq(1).text(report.uniqueCount);
     children.eq(2).text(report.wordAvg);
     $('.hidden').removeClass('hidden');
   });
@@ -15,27 +15,27 @@ function HandleSubmit() {
 
 function makeReport(text) {
 
-  tkText = text.toLowerCase().split(/\W+/);
-  let wordCt = tkText.length;
-  if (tkText[tkText.length-1] === ''){
-    tkText.pop();
-    wordCt--;
+  tokenizedText = text.toLowerCase().split(/\W+/);
+  let wordCount = tokenizedText.length;
+  if (tokenizedText[tokenizedText.length-1] === ''){
+    tokenizedText.pop();
+    wordCount--;
   }
 
-  let unqWords = new Set();
-  for (let i = 0; i < wordCt; i++) {
-      unqWords.add(tkText[i]);
-    }
+  let uniqueWords = new Set();
+  for (let i = 0; i < wordCount; i++) {
+      uniqueWords.add(tokenizedText[i]);
+  }
 
   let sum = 0;
-  for (let  i = 0; i < wordCt; i++) {
-    sum += tkText[i].length;
+  for (let  i = 0; i < wordCount; i++) {
+    sum += tokenizedText[i].length;
   }
 
   const report = {
-    wordCt: wordCt,
-    unqCt: unqWords.size,
-    wordAvg: sum/wordCt
+    wordCount: wordCount,
+    uniqueCount: uniqueWords.size,
+    wordAvg: sum/wordCount
   };
 
   return report;
@@ -43,5 +43,7 @@ function makeReport(text) {
 
 /*main*/
 $(function main(){
-  HandleSubmit();
+  handleSubmit();
 });
+
+// Alvin says --> This code deserves an A++++++++++++++++ tending to infinity :)
